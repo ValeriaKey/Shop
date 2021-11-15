@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shop.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace Shop.Data
     {
         public ShopDbContext(DbContextOptions<ShopDbContext> options)
             :base(options) { }
+
+        public DbSet<Product> Product { get; set; }
     }
 }
