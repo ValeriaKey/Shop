@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Core.Domain;
+using Shop.Core.Dtos;
 using Shop.Core.ServiceInterface;
 using Shop.Data;
 using System;
@@ -31,6 +32,44 @@ namespace Shop.ApplicationServices.Services
 
             return productId;
 
+        }
+
+        public async Task<Product> Add(ProductDto dto)
+        {
+            var domain = new Product()
+            {
+                Id = dto.Id,
+                Description = dto.Description,
+                Name = dto.Name,
+                Amount = dto.Amount,
+                Price = dto.Price,
+                ModifiedAt = DateTime.Now,
+                CreatedAt = DateTime.Now
+            };
+
+            await _context.Product.AddAsync(domain);
+            await _context.SaveChangesAsync();
+
+            return domain;
+        }
+
+        public async Task<Product> Edit(Guid id)
+        {
+            var result = await _context.Product
+                .FirstOrDefaultAsync(x => x.Id == id);
+            var dto = new ProductDto();
+            var domain = new Product()
+            {
+                Id = dto.Id,
+                Description = dto.Description,
+                Name = dto.Name,
+                Amount = dto.Amount,
+                Price = dto.Price,
+                ModifiedAt = DateTime.Now,
+                CreatedAt = dto.CreatedAt,
+            };
+
+            return domain;
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop.Core.Domain
+namespace Shop.Models.Product
 {
-    public class Product
+    public class ProductViewModel
     {
         public Guid? Id { get; set; }
         public string Name { get; set; }
@@ -15,6 +14,5 @@ namespace Shop.Core.Domain
         public int Amount { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
-
     }
 }
