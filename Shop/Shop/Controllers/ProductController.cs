@@ -69,9 +69,17 @@ namespace Shop.Controllers
                 Amount = model.Amount,
                 Price = model.Price,
                 ModifiedAt = model.ModifiedAt,
-                CreatedAt = model.CreatedAt
+                CreatedAt = model.CreatedAt,
+                Files = model.Files,
+                ExistingFilePaths = model.ExistingFilePaths
+                .Select(x => new ExistingFilePathDto
+                {
+                    PhotoId = x.PhotoId,
+                    FilePath = x.FilePath,
+                    ProductId = x.ProductId
+                }).ToArray()
             };
-
+            
             var result = await _productService.Add(dto);
             if (result == null) {
                 return RedirectToAction(nameof(Index));
@@ -83,14 +91,27 @@ namespace Shop.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             var product = await _productService.Edit(id);
-
-            if(product == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
             var model = new ProductViewModel();
 
+            model.Id = product.Id;
+            model.Description = product.Description;
+            model.Name = product.Name;
+            model.Amount = product.Amount;
+            model.Price = product.Price;
+            model.ModifiedAt = product.ModifiedAt;
+            model.CreatedAt = product.CreatedAt;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(ProductViewModel model)
+        {
             var dto = new ProductDto()
             {
                 Id = model.Id,
@@ -102,7 +123,13 @@ namespace Shop.Controllers
                 CreatedAt = model.CreatedAt
             };
 
-            return View(model);
+            var result = await _productService.Update(dto);
+
+            if(result == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index), model);
         }
     }
 }

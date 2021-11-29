@@ -42,14 +42,30 @@ else {
             </div>
         </div>
 
-        @*@if (Model.Id.HasValue)
-        {*@
-             <input asp-action="edit" asp-controller="product" type="submit" class="btn btn-primary" value="Update">
-             <input asp-action="delete" asp-controller="product" asp-for="Id" type="submit" class="btn btn-danger" value="Delete">
-        @*else
-        {*@
+        <div class="form-group row">
+            <label asp-for="Files" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-5">
+                <div class="custom-file">
+                    <input class="form-control custom-file-input" asp-for="Files" multiple type="file" />
+                    <label class="custom-file-label">Choose file...</label>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var photo in Model.ExistingFilePaths)
+        {
+            <partial name="_Photo" model="photo" />
+        }
+
+        @if (Model.Id.HasValue)
+        {
+            <input asp-action="edit" asp-controller="product" type="submit" class="btn btn-primary" value="Update">
+            <input asp-action="delete" asp-controller="product" asp-for="Id" type="submit" class="btn btn-danger" value="Delete">
+        }
+        else
+        {
             <input asp-action="add" asp-controller="product" type="submit" class="btn btn-primary" value="Add">
-        @*}*@
+        }
         <a asp-action="index" class="btn btn-primary">Index</a>
 
     </form>
