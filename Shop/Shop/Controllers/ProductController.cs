@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shop.Core.Dtos;
 using Shop.Core.ServiceInterface;
 using Shop.Data;
+using Shop.Models.Files;
 using Shop.Models.Product;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -96,6 +97,12 @@ namespace Shop.Controllers
                 return NotFound();
             }
 
+            var photos = await _context.ExistingFilePaths.Where(x => x.ProductId == id).Select(y => new ExistingFilePathViewModel
+            {
+                FilePath = y.FilePath,
+                PhotoId = y.Id
+            })
+                .ToArrayAsync();
             var model = new ProductViewModel();
 
             model.Id = product.Id;
@@ -105,6 +112,7 @@ namespace Shop.Controllers
             model.Price = product.Price;
             model.ModifiedAt = product.ModifiedAt;
             model.CreatedAt = product.CreatedAt;
+            model.ExistingFilePaths.AddRange(photos);
 
             return View(model);
         }

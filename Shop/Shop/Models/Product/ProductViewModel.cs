@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Shop.Core.Domain;
 using Shop.Core.Dtos;
 using Shop.Models.Files;
 using System;
@@ -19,6 +20,6 @@ namespace Shop.Models.Product
         public DateTime ModifiedAt { get; set; }
 
         public List<IFormFile> Files { get; set; }
-        public List<ExistingFilePathDto> ExistingFilePaths { get; set; } = new List<ExistingFilePathDto>();
+        public List<ExistingFilePathViewModel> ExistingFilePaths { get; set; } = new List<ExistingFilePathViewModel>();
     }
 }

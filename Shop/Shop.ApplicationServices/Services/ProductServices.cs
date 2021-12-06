@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Shop.Core.Domain;
 using Shop.Core.Dtos;
@@ -16,11 +17,12 @@ namespace Shop.ApplicationServices.Services
     public class ProductServices : IProductService
     {
         private readonly ShopDbContext _context;
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
+
         public ProductServices
             (
             ShopDbContext context,
-            IHostingEnvironment env
+            IWebHostEnvironment env
             )
         {
             _context = context;
@@ -42,7 +44,7 @@ namespace Shop.ApplicationServices.Services
         {
             Product product = new Product();
 
-                product.Id = dto.Id;
+                product.Id = Guid.NewGuid();
                 product.Description = dto.Description;
                 product.Name = dto.Name;
                 product.Amount = dto.Amount;
@@ -89,6 +91,11 @@ namespace Shop.ApplicationServices.Services
 
             if (dto.Files !=null && dto.Files.Count > 0)
             {
+
+                if (Directory.Exists(_env.WebRootPath + "\\multipleFileUpload\\"))
+                {
+                    Directory.CreateDirectory(_env.WebRootPath + "\\multipleFileUpload\\");
+                }
 
                 foreach (var photo in dto.Files)
                 {

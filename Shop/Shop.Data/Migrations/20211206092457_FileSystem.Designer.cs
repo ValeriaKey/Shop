@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Data;
 
 namespace Shop.Data.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    partial class ShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211206092457_FileSystem")]
+    partial class FileSystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,8 +34,6 @@ namespace Shop.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("ExistingFilePaths");
                 });
@@ -65,18 +65,6 @@ namespace Shop.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Product");
-                });
-
-            modelBuilder.Entity("Shop.Core.Domain.ExistingFilePath", b =>
-                {
-                    b.HasOne("Shop.Core.Domain.Product", null)
-                        .WithMany("ExistingFilePaths")
-                        .HasForeignKey("ProductId");
-                });
-
-            modelBuilder.Entity("Shop.Core.Domain.Product", b =>
-                {
-                    b.Navigation("ExistingFilePaths");
                 });
 #pragma warning restore 612, 618
         }
